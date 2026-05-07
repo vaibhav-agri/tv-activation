@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Activation | TV Setup Guide</title>
+    <style>
+        :root {
+            --primary-green: #00ff88;
+            --dark-bg: #0a0e0c;
+            --card-bg: #141a18;
+            --text-gray: #a0a0a0;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1a2a23 0%, #0a0e0c 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step { display: none; width: 100%; }
+        .step.active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Page 1 Styles */
+        h1 { font-size: 3rem; font-weight: 900; margin-bottom: 0; line-height: 1; text-transform: uppercase; }
+        .highlight { color: var(--primary-green); display: block; }
+        p { color: var(--text-gray); margin: 20px 0; font-size: 1.1rem; }
+        
+        .btn {
+            background-color: var(--primary-green);
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            transition: transform 0.2s;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn:hover { transform: scale(1.05); }
+
+        /* Page 2 Styles */
+        .code-inputs { display: flex; gap: 10px; justify-content: center; margin: 30px 0; }
+        .code-inputs input {
+            width: 40px; height: 55px;
+            background: #1a221f;
+            border: 1px solid #333;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        /* Page 3 Styles (Connecting) */
+        .loader-container { margin: 40px 0; position: relative; }
+        .loader-circle {
+            width: 80px; height: 80px;
+            border: 4px solid #1a221f;
+            border-top: 4px solid var(--primary-green);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .status-list { text-align: left; max-width: 320px; margin: 30px auto; background: #111; padding: 20px; border-radius: 8px; }
+        .status-item { display: flex; justify-content: space-between; margin-bottom: 15px; color: #555; font-size: 0.9rem; }
+        .status-item.done { color: #ccc; }
+        .status-item.done .check::after { content: 'COMPLETE'; color: var(--primary-green); font-weight: bold; font-size: 0.7rem; }
+
+        /* Page 4 Styles */
+        .error-box { background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255,0,0,0.3); padding: 15px; margin: 20px 0; text-align: left; border-radius: 5px; }
+        .chat-btn { background: var(--primary-green); clip-path: none; border-radius: 5px; width: 100%; color: black; font-weight: bold; padding: 18px; border: none; cursor: pointer; font-size: 1rem; }
+
+        footer { padding: 20px; font-size: 0.75rem; color: #444; width: 100%; text-align: center; border-top: 1px solid #111; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- STEP 1: HOME -->
+        <div id="step1" class="step active">
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: var(--primary-green); margin-bottom: 10px;">— DEVICE ACTIVATION —</div>
+            <h1>WATCH SPORT <span class="highlight">YOUR WAY</span></h1>
+            <p>Get your device connected to <b>Kayo Sports</b> in seconds. Enter the code shown on your TV screen to start streaming.</p>
+            <button class="btn" onclick="nextStep(2)">ACTIVATE YOUR DEVICE &nbsp; ❯</button>
+        </div>
+
+        <!-- STEP 2: ENTER CODE -->
+        <div id="step2" class="step">
+            <h2 style="font-size: 2rem; text-transform: uppercase;">ENTER <span class="highlight">YOUR CODE</span></h2>
+            <p>Type the activation code displayed on your TV screen below.</p>
+            <div class="code-inputs">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <span style="font-size: 2rem; align-self: center;">-</span>
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+                <input type="text" maxlength="1" onkeyup="moveNext(this, event)">
+            </div>
+            <button class="btn" style="width: 100%;" onclick="startConnecting()">CONNECT DEVICE</button>
+            <p style="cursor: pointer; font-size: 0.9rem;" onclick="nextStep(1)">← Back</p>
+        </div>
+
+        <!-- STEP 3: CONNECTING -->
+        <div id="step3" class="step">
+            <div class="loader-circle"></div>
+            <h2 style="margin-top: 25px; letter-spacing: 2px;">CONNECTING...</h2>
+            <p id="loading-text" style="font-style: italic;">Validating code...</p>
+            <div class="status-list">
+                <div id="status1" class="status-item"><span>Validating Code</span> <span class="check"></span></div>
+                <div id="status2" class="status-item"><span>Authenticating Account</span> <span class="check"></span></div>
+                <div id="status3" class="status-item"><span>Linking Device</span> <span class="check"></span></div>
+                <div id="status4" class="status-item"><span>Checking Firmware</span> <span class="check"></span></div>
+            </div>
+        </div>
+
+        <!-- STEP 4: ERROR / CHAT -->
+        <div id="step4" class="step">
+            <div style="color: #ff4444; font-weight: bold; margin-bottom: 10px;">● ACTION REQUIRED</div>
+            <h1 style="font-size: 2.5rem;">FIRMWARE <span class="highlight">OUT OF DATE</span></h1>
+            <p>We were unable to complete the device activation. Your device is running an outdated version. Our support team can guide you through a quick update.</p>
+            <div class="error-box">
+                <div style="display:flex; gap: 15px; align-items: center;">
+                    <span style="font-size: 1.5rem;">⚠️</span>
+                    <div>
+                        <b style="font-size: 0.9rem;">Error Details</b><br>
+                        <small style="color: var(--text-gray);">Code: ERR_FW_8821 | Firmware: v2.1.4 | Required: v3.0+</small>
+                    </div>
+                </div>
+            </div>
+            <button class="chat-btn" onclick="openChat()">START LIVE CHAT</button>
+            <p style="margin-top: 20px; cursor: pointer; text-decoration: underline; font-size: 0.8rem;" onclick="location.reload()">🔄 Try Again</p>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 Kayo Sports. All rights reserved. Help &nbsp; Privacy &nbsp; Terms
+    </footer>
+
+    <script>
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function moveNext(input, event) {
+            if (event.keyCode !== 8 && input.value.length === 1) {
+                let next = input.nextElementSibling;
+                if (next && next.tagName === 'SPAN') next = next.nextElementSibling;
+                if (next) next.focus();
+            }
+        }
+
+        function startConnecting() {
+            nextStep(3);
+            const statuses = [
+                { id: 'status1', text: 'Validating code against your account...', delay: 1200 },
+                { id: 'status2', text: 'Confirming subscription status...', delay: 2800 },
+                { id: 'status3', text: 'Registering device to your profile...', delay: 4500 },
+                { id: 'status4', text: 'Checking system firmware...', delay: 6000 }
+            ];
+
+            statuses.forEach((s, index) => {
+                setTimeout(() => {
+                    document.getElementById(s.id).classList.add('done');
+                    document.getElementById('loading-text').innerText = s.text;
+                    if(index === statuses.length - 1) {
+                        setTimeout(() => nextStep(4), 2000);
+                    }
+                }, s.delay);
+            });
+        }
+
+        function openChat() {
+            // Apna Chat script ya link yahan dalo
+            window.open('https://tawk.to/your-id', '_blank'); 
+        }
+    </script>
+</body>
+</html>
